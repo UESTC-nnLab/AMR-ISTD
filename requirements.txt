@@ -1,0 +1,28 @@
+# AMR Requirements
+# Python >= 3.11
+
+# PyTorch (CUDA 12.1 - adjust index-url for your CUDA version)
+# For CUDA 11.8, use: --extra-index-url https://download.pytorch.org/whl/cu118
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch>=2.1.0
+torchvision>=0.16.0
+
+# Core
+numpy>=1.24.0,<2.0.0
+scipy>=1.11.0
+
+# Image processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+
+# Config and utilities
+PyYAML>=6.0
+tqdm>=4.65.0
+einops>=0.7.0
+
+# Visualization
+matplotlib>=3.7.0
+tensorboard>=2.14.0
+
+# COCO evaluation
+pycocotools>=2.0.7

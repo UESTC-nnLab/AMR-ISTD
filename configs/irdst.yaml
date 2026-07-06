@@ -1,0 +1,89 @@
+# AMR: Asymmetric Memory-decoupled Reconstruction
+# IRDST Dataset Configuration
+
+data:
+  dataset_type: irdst
+  dataset_root: ./dataset/IRDST/IRDST_real/
+  input_shape: [512, 512]
+  pad_to_size: [512, 512]
+  eval_pad_to_size: [512, 512]
+  base_size: 512
+  crop_size: 512
+  pad_divisor: 4
+  pad_only: true
+  scale_jitter: 0.0
+  data_augment: true
+  flip_augmentation: true
+  vflip_augmentation: true
+  brightness_jitter: 0.2
+  contrast_jitter: 0.2
+  gaussian_noise: 0.01
+
+model:
+  in_channels: 3
+  num_classes: 1
+  base_channels: 16
+  backbone_depth: 3
+  target_memory_slots: 8
+  tg_topk: 2
+  background_memory_slots: 32
+  bg_topk: 4
+  bg_decoder_hidden_channels: 64
+  tg_decoder_hidden_channels: 64
+  bg_decoder_upsample_scale: 4
+  tg_decoder_upsample_scale: 4
+  use_attention: true
+  norm_type: bn
+  act_type: relu
+  use_residual: true
+  ms_fusion_type: attention
+  global_fusion_strategy: spatial_reweight
+  bg_patch_sizes: [3]
+  tg_patch_sizes: [3]
+
+training:
+  batch_size: 8
+  accumulation_steps: 1
+  epochs: 100
+  fp16: true
+  lr: 0.001
+  weight_decay: 0.01
+  num_workers: 1
+  save_dir: ./logs/irdst
+  save_period: 1
+  save_every_epoch: true
+
+distributed:
+  enabled: true
+  backend: nccl
+  world_size: 4
+  master_addr: localhost
+  master_port: 29500
+
+loss_scheduler:
+  warmup_epochs: 0
+  residual_recon_start_epoch: 0
+  residual_recon_weight: 1.0
+  residual_recon_rampup_epochs: 1
+
+residual_recon_loss:
+  alpha: 0.1
+  beta: 2.0
+  gamma: 0.5
+
+yolox_loss:
+  strides: [4]
+  center_radius: 5.0
+  use_focal: true
+  focal_alpha: 0.25
+  focal_gamma: 3.0
+  adaptive_center_radius: true
+
+eval:
+  eval_flag: true
+  eval_period: 1
+  conf_thresh: 0.001
+  iou_thresh: 0.5
+  nms_thresh: 0.2
+
+seed: 42
